@@ -15,6 +15,7 @@ const Login = () => {
   const googleSignOut = () => {
     signOut(auth).then((r) => {
       setLoggedIn(false);
+      console.log("aa");
     });
   };
 
