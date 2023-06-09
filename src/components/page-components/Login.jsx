@@ -1,13 +1,13 @@
 import React, { useContext, useState } from "react";
 import { Box, Button } from "@mui/material";
-import { auth, provider } from "../../server/firebaseConfig";
+import { auth, provider } from "../../../server/firebaseConfig";
 import {
   signInWithPopup,
   signOut,
   setPersistence,
   browserSessionPersistence,
 } from "firebase/auth";
-import { UserContext } from "../App";
+import { UserContext } from "../../App";
 
 const Login = () => {
   const { user, setUser } = useContext(UserContext);
