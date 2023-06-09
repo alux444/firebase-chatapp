@@ -29,7 +29,6 @@ const Login = () => {
     <Box>
       <Box>
         <p>Sign in with Google</p>
-        <Button onClick={test}>aa</Button>
         <Button onClick={googleSignIn}>Sign In</Button>
         {user.loggedIn ? <p>Welcome, {user.username}</p> : <p>Logged out</p>}
       </Box>
