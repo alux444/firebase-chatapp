@@ -1,9 +1,18 @@
 import { Box, Button, TextField } from "@mui/material";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { db } from "../../../server/firebaseConfig";
+import {
+  collection,
+  getDoc,
+  addDoc,
+  serverTimestamp,
+} from "firebase/firestore";
+import { UserContext } from "../../App";
 
 const InputArea = () => {
   const [message, setMessage] = useState("");
+  const { user } = useContext(UserContext);
+  const messagesRef = collection(db, "messages");
 
   const handleChange = (e) => {
     if (e.target.value.length < 100) {
@@ -16,19 +25,15 @@ const InputArea = () => {
 
     console.log(message);
 
-    const messageRef = db.collection("messages").doc();
-    messageRef
-      .set({
-        content: message,
-        timestamp: new Date(),
-      })
-      .then(() => {
-        console.log("Message saved to the database!");
-        setMessage(""); // Clear the input field
-      })
-      .catch((error) => {
-        console.error("Error saving message to the database:", error);
+    const createMessage = async () => {
+      await addDoc(messagesRef, {
+        username: user.username,
+        message: message,
+        time: serverTimestamp(),
       });
+    };
+
+    createMessage();
   };
 
   const handleAskTimmy = (e) => {
