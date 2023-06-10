@@ -1,5 +1,5 @@
 import { Box, useScrollTrigger } from "@mui/material";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, onSnapshot } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { db } from "../../../server/firebaseConfig";
 
@@ -8,20 +8,13 @@ const MessagesArea = () => {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    console.log("hello");
+    const unsubscribe = onSnapshot(messagesRef, (querySnapshot) => {
+      const newMessages = querySnapshot.docs.map((doc) => ({ ...doc.data() }));
+      setMessages(newMessages);
+    });
 
-    const getMessages = async () => {
-      const data = await getDocs(messagesRef);
-      const newMessages = data.docs.map((doc) => ({ ...doc.data() }));
-
-      if (JSON.stringify(messages) !== JSON.stringify(newMessages)) {
-        setMessages(newMessages);
-      }
-      console.log(messages);
-    };
-
-    getMessages();
-  }, [messages]);
+    return () => unsubscribe();
+  }, []);
 
   const mappedMessages = messages.map((message) => (
     <Box key={message.id}>
