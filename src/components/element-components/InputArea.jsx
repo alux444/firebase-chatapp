@@ -1,5 +1,6 @@
 import { Box, Button, TextField } from "@mui/material";
 import React, { useState } from "react";
+import { db } from "../../../server/firebaseConfig";
 
 const InputArea = () => {
   const [message, setMessage] = useState("");
@@ -12,6 +13,26 @@ const InputArea = () => {
 
   const handleSendMessage = (e) => {
     e.preventDefault();
+
+    console.log(message);
+
+    const messageRef = db.collection("messages").doc();
+    messageRef
+      .set({
+        content: message,
+        timestamp: new Date(),
+      })
+      .then(() => {
+        console.log("Message saved to the database!");
+        setMessage(""); // Clear the input field
+      })
+      .catch((error) => {
+        console.error("Error saving message to the database:", error);
+      });
+  };
+
+  const handleAskTimmy = (e) => {
+    e.preventDefault();
   };
 
   return (
@@ -23,10 +44,14 @@ const InputArea = () => {
           variant="filled"
           onChange={handleChange}
           value={message}
-          sx={{ input: { color: "white" }, width: "80%" }}
+          sx={{ input: { color: "white" }, width: "70%" }}
         />
-        <Button type="submit">Send Message</Button>
-        <Button>Ask Timmy</Button>
+        <Button sx={{ width: "15%" }} type="submit">
+          Send Message
+        </Button>
+        <Button sx={{ width: "15%" }} onClick={handleAskTimmy}>
+          Ask Timmy
+        </Button>
       </form>
     </Box>
   );

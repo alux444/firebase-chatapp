@@ -16,13 +16,14 @@ const Login = () => {
   };
 
   const googleSignIn = () => {
-    setPersistence(auth, browserSessionPersistence)
-      .then(() => {
-        signInWithPopup(auth, provider).then((result) => {
-          setUser({ loggedIn: true, username: result.user.email });
-        });
-      })
-      .catch((error) => {});
+    // setPersistence(auth, browserSessionPersistence)
+    //   .then(() => {
+    signInWithPopup(auth, provider).then((result) => {
+      const username = result.user.email.split("@")[0];
+      setUser({ loggedIn: true, username: username });
+    });
+    // })
+    // .catch((error) => {});
   };
 
   return (
