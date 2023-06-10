@@ -1,7 +1,8 @@
 import React, { createContext, useState } from "react";
 import "./App.css";
-import Login from "./components/Login";
-import { useContext } from "react";
+import { BrowserRouter } from "react-router-dom";
+import Views from "./components/page-components/Views";
+import NavBar from "./components/element-components/NavBar";
 
 export const UserContext = createContext();
 
@@ -10,9 +11,10 @@ function App() {
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
-      <div>
-        <Login />
-      </div>
+      <BrowserRouter>
+        <NavBar />
+        <Views />
+      </BrowserRouter>
     </UserContext.Provider>
   );
 }
