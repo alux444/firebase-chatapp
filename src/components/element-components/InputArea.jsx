@@ -1,12 +1,7 @@
 import { Box, Button, TextField } from "@mui/material";
 import React, { useContext, useState } from "react";
 import { db } from "../../../server/firebaseConfig";
-import {
-  collection,
-  getDoc,
-  addDoc,
-  serverTimestamp,
-} from "firebase/firestore";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { UserContext } from "../../App";
 import { askTimmy } from "../utils/AskTimmy";
 
