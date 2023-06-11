@@ -13,10 +13,14 @@ const Views = () => {
   const pathname = location.pathname;
 
   useEffect(() => {
-    if (user.loggedIn && pathname === "/") {
+    if (user.username && pathname === "/") {
       navigate("/home");
     }
-  }, [user.loggedIn, navigate]);
+
+    if (!user.username && pathname === "/home") {
+      navigate("/");
+    }
+  }, [user, navigate]);
 
   return (
     <Routes>
