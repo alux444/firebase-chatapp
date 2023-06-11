@@ -1,32 +1,36 @@
 import { Box, Typography } from "@mui/material";
-import { collection, onSnapshot } from "firebase/firestore";
-import React, { useContext, useEffect, useState } from "react";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { db } from "../../../server/firebaseConfig";
 import { UserContext } from "../../App";
 
 const MessagesArea = () => {
   const { user } = useContext(UserContext);
-
+  const latestMessagesRef = useRef(null);
   const messagesRef = collection(db, "messages");
   const [messages, setMessages] = useState([]);
 
+  const scroll = () => {
+    latestMessagesRef.current.scrollIntoView({ behavior: "smooth" });
+  };
+
   useEffect(() => {
-    const unsubscribe = onSnapshot(messagesRef, (querySnapshot) => {
-      const newMessages = querySnapshot.docs.map((doc) => ({ ...doc.data() }));
-      setMessages(newMessages);
-    });
+    const unsubscribe = onSnapshot(
+      query(messagesRef, orderBy("time", "asc")),
+      (querySnapshot) => {
+        const newMessages = querySnapshot.docs.map((doc) => ({
+          ...doc.data(),
+        }));
+        setMessages(newMessages);
+      }
+    );
 
     return () => unsubscribe();
   }, []);
 
-  const test = () => {
-    console.log(messages);
-    console.log(new Date(messages[0].time.seconds * 1000));
-  };
-
   const mappedMessages = messages.map((message) => {
-    const date = new Date(message.time.seconds * 1000);
-    const formattedDate = date.toLocaleString();
+    const date = message.time ? new Date(message.time.seconds * 1000) : null;
+    const formattedDate = message.time ? date.toLocaleString() : "Loading";
 
     return (
       <Box
@@ -70,8 +74,9 @@ const MessagesArea = () => {
 
   return (
     <Box sx={{ width: "100%", height: "80%", overflow: "auto" }}>
-      <button onClick={test}>aa</button>
+      <button onClick={scroll}>latest</button>
       {mappedMessages}
+      <div ref={latestMessagesRef} />
     </Box>
   );
 };

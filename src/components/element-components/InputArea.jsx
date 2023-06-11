@@ -8,6 +8,7 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import { UserContext } from "../../App";
+import { askTimmy } from "../utils/AskTimmy";
 
 const InputArea = () => {
   const [message, setMessage] = useState("");
@@ -27,17 +28,22 @@ const InputArea = () => {
 
     const createMessage = async () => {
       await addDoc(messagesRef, {
+        time: serverTimestamp(),
         username: user.username,
         message: message,
-        time: serverTimestamp(),
       });
     };
 
     createMessage();
+    setMessage("");
   };
 
   const handleAskTimmy = (e) => {
     e.preventDefault();
+
+    askTimmy("hi man");
+
+    setMessage("");
   };
 
   return (
