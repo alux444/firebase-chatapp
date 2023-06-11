@@ -1,39 +1,51 @@
 import { Box, Typography } from "@mui/material";
-import { collection, onSnapshot } from "firebase/firestore";
-import React, { useContext, useEffect, useState } from "react";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { db } from "../../../server/firebaseConfig";
-import { UserContext } from "../../App";
+import { ScrollContext, UserContext } from "../../App";
 
 const MessagesArea = () => {
   const { user } = useContext(UserContext);
-
+  const { autoScroll } = useContext(ScrollContext);
+  const latestMessagesRef = useRef(null);
   const messagesRef = collection(db, "messages");
   const [messages, setMessages] = useState([]);
 
+  const scroll = () => {
+    latestMessagesRef.current.scrollIntoView({ behavior: "smooth" });
+  };
+
   useEffect(() => {
-    const unsubscribe = onSnapshot(messagesRef, (querySnapshot) => {
-      const newMessages = querySnapshot.docs.map((doc) => ({ ...doc.data() }));
-      setMessages(newMessages);
-    });
+    const unsubscribe = onSnapshot(
+      query(messagesRef, orderBy("time", "asc")),
+      (querySnapshot) => {
+        const newMessages = querySnapshot.docs.map((doc) => ({
+          ...doc.data(),
+        }));
+        setMessages(newMessages);
+      }
+    );
 
     return () => unsubscribe();
   }, []);
 
-  const test = () => {
-    console.log(messages);
-    console.log(new Date(messages[0].time.seconds * 1000));
-  };
+  useEffect(() => {
+    if (autoScroll) {
+      scroll();
+    }
+  }, [messages]);
 
   const mappedMessages = messages.map((message) => {
-    const date = new Date(message.time.seconds * 1000);
-    const formattedDate = date.toLocaleString();
+    const date = message.time ? new Date(message.time.seconds * 1000) : null;
+    const formattedDate = message.time ? date.toLocaleString() : "Loading";
 
     return (
       <Box
         key={message.id}
         sx={{
           height: "min-content",
-          width: "100%",
+          width: "calc(100%-10px)",
+          padding: "5px",
         }}
       >
         <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -54,6 +66,7 @@ const MessagesArea = () => {
                 message.username === user.username ? "flex-end" : "flex-start",
               border: "2px solid #646cff;",
               padding: "5px",
+              margin: "0 5px",
               borderRadius: "10px",
               wordBreak: "break-word",
               maxWidth: "80%",
@@ -70,8 +83,9 @@ const MessagesArea = () => {
 
   return (
     <Box sx={{ width: "100%", height: "80%", overflow: "auto" }}>
-      <button onClick={test}>aa</button>
+      <button onClick={scroll}>Scroll to Bottom</button>
       {mappedMessages}
+      <div ref={latestMessagesRef} />
     </Box>
   );
 };
