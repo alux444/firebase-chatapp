@@ -35,9 +35,8 @@ const Login = () => {
   return (
     <Box>
       <Box>
-        <p>Sign in with Google</p>
+        <p>Sign in with Google to continue</p>
         <Button onClick={googleSignIn}>Sign In</Button>
-        {user.loggedIn ? <p>Welcome, {user.username}</p> : <p>Logged out</p>}
       </Box>
     </Box>
   );

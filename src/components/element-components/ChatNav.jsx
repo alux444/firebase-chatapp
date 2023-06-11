@@ -12,7 +12,7 @@ const ChatNav = () => {
         width: "90vw",
       }}
     >
-      <Typography>ghello</Typography>
+      <Typography></Typography>
     </Box>
   );
 };

@@ -14,7 +14,7 @@ const NavBar = () => {
         justifyContent: "center",
         display: "flex",
         gap: "40px",
-        marginTop: "10px",
+        margin: "10px 0px",
       }}
     >
       <Link to="/" className={`${isActive("/")}${isActive("/home")}`}>

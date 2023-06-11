@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { UserContext } from "../../App";
+import { ScrollContext, UserContext } from "../../App";
 import { Button, Box, Typography } from "@mui/material";
 import { signOut } from "firebase/auth";
 import { auth } from "../../../server/firebaseConfig";
@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 const SettingsNav = () => {
   const { user, setUser } = useContext(UserContext);
+  const { autoScroll, setAutoScroll } = useContext(ScrollContext);
 
   const navigate = useNavigate();
 
@@ -30,6 +31,9 @@ const SettingsNav = () => {
       <Box sx={{ display: "flex", alignItems: "center" }}>
         <Typography>Welcome, {user.username}!</Typography>
         <Button>Change Username?</Button>
+        <Button onClick={() => setAutoScroll(!autoScroll)}>
+          {autoScroll ? "Disable Autoscroll?" : "Enable Autoscroll?"}
+        </Button>
       </Box>
       <Button onClick={googleSignOut}>Sign out</Button>
     </Box>
