@@ -40,11 +40,11 @@ const SettingsNav = () => {
     >
       <Box sx={{ display: "flex", alignItems: "center" }}>
         <Typography>Welcome, {user.username}!</Typography>
-        <Button>Change Username?</Button>
+        <Button onClick={() => openUsernameModal()}>Change Username?</Button>
         <Button onClick={() => setAutoScroll(!autoScroll)}>
           {autoScroll ? "Disable Autoscroll?" : "Enable Autoscroll?"}
         </Button>
-        <ChangeUsername open={openUsernameModal} close={closeUsernameModal} />
+        <ChangeUsername open={openUsername} close={closeUsernameModal} />
       </Box>
       <Button onClick={googleSignOut}>Sign out</Button>
     </Box>
