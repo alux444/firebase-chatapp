@@ -27,7 +27,7 @@ const Login = () => {
 
     signInWithPopup(auth, provider).then((result) => {
       const username = result.user.email.split("@")[0];
-      setUser({ loggedIn: true, username: username });
+      setUser({ loggedIn: true, username: username, email: result.user.email });
       createUser(username, result.user.email);
     });
   };
