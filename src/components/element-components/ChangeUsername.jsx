@@ -6,14 +6,16 @@ import {
   getDocs,
   query,
   where,
+  writeBatch,
 } from "firebase/firestore";
 import { db } from "../../../server/firebaseConfig";
 import { UserContext } from "../../App";
 
 const ChangeUsername = ({ open, close }) => {
   const [newName, setNewName] = useState("");
-  const [error, setError] = useState(false);
+  const [error, setError] = useState("");
   const usersRef = collection(db, "users");
+  const messagesRef = collection(db, "messages");
   const { user } = useContext(UserContext);
 
   const handleChange = (e) => {
@@ -25,7 +27,7 @@ const ChangeUsername = ({ open, close }) => {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    setError(false);
+    setError("");
 
     const tryChange = async (name) => {
       const querySnapshot = await getDocs(
@@ -36,19 +38,35 @@ const ChangeUsername = ({ open, close }) => {
         query(usersRef, where("email", "==", user.email))
       );
 
-      console.log(userDocs);
+      if (!querySnapshot.empty) {
+        setError(true);
+        return;
+      }
 
-      if (querySnapshot.empty) {
+      if (!userDocs.empty) {
         await updateDoc(userDocs.docs[0].ref, {
           username: name,
         });
-      } else {
-        setError(true);
-        console.log(querySnapshot);
+
+        const allMessagesFromUser = await getDocs(
+          query(messagesRef, where("username", "==", user.username))
+        );
+
+        console.log(user.username);
+
+        allMessagesFromUser.forEach((doc) => {
+          updateDoc(doc.ref, {
+            username: name,
+          });
+        });
+
+        setError("Success! Your name was changed.");
       }
     };
 
     tryChange(newName);
+
+    setNewName("");
   };
 
   return (
@@ -90,9 +108,7 @@ const ChangeUsername = ({ open, close }) => {
                 <button type="submit">Change</button>
               </form>
             </Box>
-            <Typography>
-              {error ? "Sorry, that name was taken..." : null}
-            </Typography>
+            <Typography>{error}</Typography>
           </Box>
         </Box>
       </Modal>

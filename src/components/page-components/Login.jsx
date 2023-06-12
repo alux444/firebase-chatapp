@@ -12,6 +12,22 @@ const Login = () => {
   const usersRef = collection(db, "users");
 
   const googleSignIn = () => {
+    const searchForUser = async (email) => {
+      const querySnapshot = await getDocs(
+        query(usersRef, where("email", "==", email))
+      );
+
+      if (!querySnapshot.empty) {
+        const userDoc = querySnapshot.docs[0];
+        const userData = userDoc.data();
+        const username = userData.username;
+        setUser({ loggedIn: true, username: username, email: email });
+      } else {
+        const username = email.split("@")[0];
+        createUser(username, email);
+      }
+    };
+
     const createUser = async (username, email) => {
       const querySnapshot = await getDocs(
         query(usersRef, where("email", "==", email))
@@ -26,9 +42,7 @@ const Login = () => {
     };
 
     signInWithPopup(auth, provider).then((result) => {
-      const username = result.user.email.split("@")[0];
-      setUser({ loggedIn: true, username: username, email: result.user.email });
-      createUser(username, result.user.email);
+      searchForUser(result.user.email);
     });
   };
 
