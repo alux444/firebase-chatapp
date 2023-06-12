@@ -6,7 +6,6 @@ import {
   getDocs,
   query,
   where,
-  writeBatch,
 } from "firebase/firestore";
 import { db } from "../../../server/firebaseConfig";
 import { UserContext } from "../../App";
@@ -16,7 +15,7 @@ const ChangeUsername = ({ open, close }) => {
   const [error, setError] = useState("");
   const usersRef = collection(db, "users");
   const messagesRef = collection(db, "messages");
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
 
   const handleChange = (e) => {
     if (e.target.value.length < 30) {
@@ -59,6 +58,11 @@ const ChangeUsername = ({ open, close }) => {
             username: name,
           });
         });
+
+        setUser((prevUser) => ({
+          ...prevUser,
+          username: name,
+        }));
 
         setError("Success! Your name was changed.");
       }
@@ -108,7 +112,7 @@ const ChangeUsername = ({ open, close }) => {
                 <button type="submit">Change</button>
               </form>
             </Box>
-            <Typography>{error}</Typography>
+            <Typography sx={{ textAlign: "center" }}>{error}</Typography>
           </Box>
         </Box>
       </Modal>
