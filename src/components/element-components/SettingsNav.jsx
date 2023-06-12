@@ -1,13 +1,23 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { ScrollContext, UserContext } from "../../App";
 import { Button, Box, Typography } from "@mui/material";
 import { signOut } from "firebase/auth";
 import { auth } from "../../../server/firebaseConfig";
 import { useNavigate } from "react-router-dom";
+import ChangeUsername from "./ChangeUsername";
 
 const SettingsNav = () => {
   const { user, setUser } = useContext(UserContext);
   const { autoScroll, setAutoScroll } = useContext(ScrollContext);
+  const [openUsername, setOpenUsername] = useState(false);
+
+  const openUsernameModal = () => {
+    setOpenUsername(true);
+  };
+
+  const closeUsernameModal = () => {
+    setOpenUsername(false);
+  };
 
   const navigate = useNavigate();
 
@@ -30,10 +40,11 @@ const SettingsNav = () => {
     >
       <Box sx={{ display: "flex", alignItems: "center" }}>
         <Typography>Welcome, {user.username}!</Typography>
-        <Button>Change Username?</Button>
+        <Button onClick={() => openUsernameModal()}>Change Username?</Button>
         <Button onClick={() => setAutoScroll(!autoScroll)}>
           {autoScroll ? "Disable Autoscroll?" : "Enable Autoscroll?"}
         </Button>
+        <ChangeUsername open={openUsername} close={closeUsernameModal} />
       </Box>
       <Button onClick={googleSignOut}>Sign out</Button>
     </Box>

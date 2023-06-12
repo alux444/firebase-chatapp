@@ -83,7 +83,9 @@ const MessagesArea = () => {
 
   return (
     <Box sx={{ width: "100%", height: "80%", overflow: "auto" }}>
-      <button onClick={scroll}>Scroll to Bottom</button>
+      <button style={{ margin: "10px 0px" }} onClick={scroll}>
+        Scroll to Bottom
+      </button>
       {mappedMessages}
       <div ref={latestMessagesRef} />
     </Box>

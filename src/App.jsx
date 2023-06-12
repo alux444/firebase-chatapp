@@ -9,7 +9,11 @@ export const UserContext = createContext();
 export const ScrollContext = createContext();
 
 function App() {
-  const [user, setUser] = useState({ loggedIn: false, username: "" });
+  const [user, setUser] = useState({
+    loggedIn: false,
+    username: "",
+    email: "",
+  });
   const [autoScroll, setAutoScroll] = useState(true);
 
   return (
