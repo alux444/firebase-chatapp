@@ -1,4 +1,4 @@
-import { Box, Button, TextField } from "@mui/material";
+import { Box } from "@mui/material";
 import React, { useContext, useState } from "react";
 import { db } from "../../../server/firebaseConfig";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
@@ -18,8 +18,6 @@ const InputArea = () => {
   const handleSendMessage = (e) => {
     e.preventDefault();
 
-    console.log(message);
-
     const createMessage = async () => {
       await addDoc(messagesRef, {
         time: serverTimestamp(),
@@ -28,8 +26,10 @@ const InputArea = () => {
       });
     };
 
-    createMessage();
-    setMessage("");
+    if (message.length > 0) {
+      createMessage();
+      setMessage("");
+    }
   };
 
   return (

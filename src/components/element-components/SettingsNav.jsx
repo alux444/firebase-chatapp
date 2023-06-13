@@ -43,7 +43,7 @@ const SettingsNav = () => {
         <Typography sx={{ marginLeft: "10px" }}>
           Welcome, {user.username}!
         </Typography>
-        <button onClick={() => openUsernameModal()}>Change Username?</button>
+        <button onClick={() => openUsernameModal()}>Change Name?</button>
         <button onClick={() => setAutoScroll(!autoScroll)}>
           {autoScroll ? "Disable Autoscroll?" : "Enable Autoscroll?"}
         </button>
