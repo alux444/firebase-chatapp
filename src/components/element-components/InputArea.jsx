@@ -1,4 +1,4 @@
-import { Box, Button, TextField } from "@mui/material";
+import { Box } from "@mui/material";
 import React, { useContext, useState } from "react";
 import { db } from "../../../server/firebaseConfig";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
@@ -18,8 +18,6 @@ const InputArea = () => {
   const handleSendMessage = (e) => {
     e.preventDefault();
 
-    console.log(message);
-
     const createMessage = async () => {
       await addDoc(messagesRef, {
         time: serverTimestamp(),
@@ -28,24 +26,45 @@ const InputArea = () => {
       });
     };
 
-    createMessage();
-    setMessage("");
+    if (message.length > 0) {
+      createMessage();
+      setMessage("");
+    }
   };
 
   return (
-    <Box sx={{ width: "100%", height: "20%", border: "1px solid red" }}>
-      <form onSubmit={handleSendMessage}>
-        <TextField
-          id="filled-basic"
+    <Box
+      sx={{
+        width: "100%",
+        height: "15%",
+        border: "1px solid white",
+      }}
+    >
+      <form
+        onSubmit={handleSendMessage}
+        style={{
+          width: "100%",
+          height: "100%",
+          alignContent: "center",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <input
           label="Send Message Here"
-          variant="filled"
           onChange={handleChange}
           value={message}
-          sx={{ input: { color: "white" }, width: "70%" }}
+          style={{
+            input: { color: "white" },
+            height: "30px",
+            width: "85%",
+            margin: "5px",
+          }}
         />
-        <Button sx={{ width: "25%" }} type="submit">
-          Send Message
-        </Button>
+        <button style={{ width: "90px", margin: "5px" }} type="submit">
+          Send
+        </button>
       </form>
     </Box>
   );

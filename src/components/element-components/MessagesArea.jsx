@@ -82,7 +82,7 @@ const MessagesArea = () => {
   });
 
   return (
-    <Box sx={{ width: "100%", height: "80%", overflow: "auto" }}>
+    <Box sx={{ width: "100%", height: "85%", overflow: "auto" }}>
       <button style={{ margin: "10px 0px" }} onClick={scroll}>
         Scroll to Bottom
       </button>

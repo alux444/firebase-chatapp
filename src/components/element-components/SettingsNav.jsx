@@ -36,17 +36,22 @@ const SettingsNav = () => {
         justifyContent: "space-between",
         alignItems: "center",
         width: "90vw",
+        padding: "10px 0px",
       }}
     >
-      <Box sx={{ display: "flex", alignItems: "center" }}>
-        <Typography>Welcome, {user.username}!</Typography>
-        <Button onClick={() => openUsernameModal()}>Change Username?</Button>
-        <Button onClick={() => setAutoScroll(!autoScroll)}>
+      <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
+        <Typography sx={{ marginLeft: "10px" }}>
+          Welcome, {user.username}!
+        </Typography>
+        <button onClick={() => openUsernameModal()}>Change Name?</button>
+        <button onClick={() => setAutoScroll(!autoScroll)}>
           {autoScroll ? "Disable Autoscroll?" : "Enable Autoscroll?"}
-        </Button>
+        </button>
         <ChangeUsername open={openUsername} close={closeUsernameModal} />
       </Box>
-      <Button onClick={googleSignOut}>Sign out</Button>
+      <button style={{ marginRight: "10px" }} onClick={googleSignOut}>
+        Sign out
+      </button>
     </Box>
   );
 };

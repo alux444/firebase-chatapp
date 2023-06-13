@@ -50,7 +50,7 @@ const Login = () => {
     <Box>
       <Box>
         <p>Sign in with Google to continue</p>
-        <Button onClick={googleSignIn}>Sign In</Button>
+        <button onClick={googleSignIn}>Sign In</button>
       </Box>
     </Box>
   );

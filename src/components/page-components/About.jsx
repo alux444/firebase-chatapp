@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 const About = () => {
   return (
     <div>
       <h2>Firebase Chatapp</h2>
       <p>This is a simple live chatapp created with React and Firebase.</p>
-      <h4>How to use it:</h4>
       <p>
-        First, sign in using your google account. You will be redirected to the
-        homepage.
+        The source repository can be found{" "}
+        <a href="https://github.com/alux444/firebase-chatapp">here</a>
       </p>
     </div>
   );
