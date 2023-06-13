@@ -13,21 +13,21 @@ const Views = () => {
   const pathname = location.pathname;
 
   useEffect(() => {
-    if (user.username && pathname === "/") {
-      navigate("/home");
+    if (user.username && pathname === "/firebase-chatapp/") {
+      navigate("/firebase-chatapp/home");
     }
 
-    if (!user.username && pathname === "/home") {
-      navigate("/");
+    if (!user.username && pathname === "/firebase-chatapp/home") {
+      navigate("/firebase-chatapp/");
     }
   }, [user, navigate]);
 
   return (
     <Routes>
-      <Route path="/" element={<Login />} />
+      <Route path="/firebase-chatapp/" element={<Login />} />
       <Route path="*" element={<Login />} />
-      <Route path="/about" element={<About />} />
-      <Route path="/home" element={<Home />} />
+      <Route path="/firebase-chatapp/about" element={<About />} />
+      <Route path="/firebase-chatapp/home" element={<Home />} />
     </Routes>
   );
 };

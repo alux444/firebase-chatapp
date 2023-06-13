@@ -25,7 +25,7 @@ const SettingsNav = () => {
     signOut(auth).then((r) => {
       setUser({ loggedIn: false, username: "" });
     });
-    navigate("/");
+    navigate("/firebase-chatapp/");
   };
 
   return (
