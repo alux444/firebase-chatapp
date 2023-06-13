@@ -49,7 +49,7 @@ const Login = () => {
   return (
     <Box>
       <Box>
-        <p>Sign in with Google to continue</p>
+        <p>Sign in with Google</p>
         <button onClick={googleSignIn}>Sign In</button>
       </Box>
     </Box>
