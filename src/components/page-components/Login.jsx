@@ -5,9 +5,11 @@ import { signInWithPopup } from "firebase/auth";
 import { UserContext } from "../../App";
 import { collection, addDoc, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../../server/firebaseConfig";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const { user, setUser } = useContext(UserContext);
+  const navigate = useNavigate();
 
   const usersRef = collection(db, "users");
 
@@ -43,6 +45,7 @@ const Login = () => {
 
     signInWithPopup(auth, provider).then((result) => {
       searchForUser(result.user.email);
+      navigate("/firebase-chatapp/home");
     });
   };
 
