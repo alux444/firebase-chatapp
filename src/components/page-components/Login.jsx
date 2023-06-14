@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { Box, Button } from "@mui/material";
+import React, { useContext, useState, useEffect } from "react";
+import { Box } from "@mui/material";
 import { auth, provider } from "../../../server/firebaseConfig";
 import { signInWithPopup } from "firebase/auth";
 import { UserContext } from "../../App";
@@ -9,24 +9,39 @@ import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const { user, setUser } = useContext(UserContext);
+  const [message, setMessage] = useState("");
+  const [disableButton, setDisableButton] = useState(false);
   const navigate = useNavigate();
 
   const usersRef = collection(db, "users");
 
   const googleSignIn = () => {
+    setDisableButton(true);
+
     const searchForUser = async (email) => {
       const querySnapshot = await getDocs(
         query(usersRef, where("email", "==", email))
       );
 
       if (!querySnapshot.empty) {
+        setMessage("Found user, logging you in...");
         const userDoc = querySnapshot.docs[0];
         const userData = userDoc.data();
         const username = userData.username;
         setUser({ loggedIn: true, username: username, email: email });
+        localStorage.setItem(
+          "loggedInUser",
+          JSON.stringify({ username, email })
+        );
       } else {
         const username = email.split("@")[0];
+        setMessage("New user! Creating account...");
         createUser(username, email);
+        setUser({ loggedIn: true, username: username, email: email });
+        localStorage.setItem(
+          "loggedInUser",
+          JSON.stringify({ username, email })
+        );
       }
     };
 
@@ -45,15 +60,41 @@ const Login = () => {
 
     signInWithPopup(auth, provider).then((result) => {
       searchForUser(result.user.email);
-      navigate("/firebase-chatapp/home");
     });
+
+    setDisableButton(false);
+
+    setMessage("");
   };
+
+  useEffect(() => {
+    const loggedInUser = localStorage.getItem("loggedInUser");
+    if (loggedInUser) {
+      const { username, email } = JSON.parse(loggedInUser);
+      setUser({ loggedIn: true, username, email });
+    }
+  }, []);
 
   return (
     <Box>
       <Box>
-        <p>Sign in with Google</p>
-        <button onClick={googleSignIn}>Sign In</button>
+        {!user.loggedIn ? (
+          <Box>
+            <p>Sign in with Google</p>
+            <button disabled={disableButton} onClick={() => googleSignIn()}>
+              Sign In
+            </button>
+            <br />
+            {message}
+          </Box>
+        ) : (
+          <Box>
+            <p>Welcome, {user.username}!</p>
+            <button onClick={() => navigate("/firebase-chatapp/home")}>
+              Join Chatroom
+            </button>
+          </Box>
+        )}
       </Box>
     </Box>
   );

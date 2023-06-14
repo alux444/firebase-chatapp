@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useRef, useEffect } from "react";
 import { Modal, Box, Typography } from "@mui/material";
 import {
   collection,
@@ -16,6 +16,26 @@ const ChangeUsername = ({ open, close }) => {
   const usersRef = collection(db, "users");
   const messagesRef = collection(db, "messages");
   const { user, setUser } = useContext(UserContext);
+
+  const modalRef = useRef(null);
+
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (modalRef.current && !modalRef.current.contains(event.target)) {
+        close();
+      }
+    };
+
+    if (open) {
+      document.addEventListener("mousedown", handleOutsideClick);
+    } else {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [open, close]);
 
   const handleChange = (e) => {
     if (e.target.value.length < 30) {
@@ -87,6 +107,7 @@ const ChangeUsername = ({ open, close }) => {
           }}
         >
           <Box
+            ref={modalRef}
             sx={{
               width: "50vw",
               height: "20vh",

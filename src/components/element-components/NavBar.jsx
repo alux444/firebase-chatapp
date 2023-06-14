@@ -17,13 +17,14 @@ const NavBar = () => {
         margin: "10px 0px",
       }}
     >
+      <Link to="/firebase-chatapp/" className={isActive("/firebase-chatapp/")}>
+        Login
+      </Link>
       <Link
-        to="/firebase-chatapp/"
-        className={`${isActive("/firebase-chatapp/")}${isActive(
-          "/firebase-chatapp/home"
-        )}`}
+        to="/firebase-chatapp/home"
+        className={isActive("/firebase-chatapp/home")}
       >
-        Home
+        Chatroom
       </Link>
       <Link
         to="/firebase-chatapp/about"
