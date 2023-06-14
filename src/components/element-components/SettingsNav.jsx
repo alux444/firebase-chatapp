@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { ScrollContext, UserContext } from "../../App";
-import { Button, Box, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { signOut } from "firebase/auth";
 import { auth } from "../../../server/firebaseConfig";
 import { useNavigate } from "react-router-dom";
@@ -45,6 +45,7 @@ const SettingsNav = () => {
         <Typography sx={{ marginLeft: "10px" }}>
           Welcome, {user.username}!
         </Typography>
+        <button>Create Chatroom?</button>
         <button onClick={() => openUsernameModal()}>Change Name?</button>
         <button onClick={() => setAutoScroll(!autoScroll)}>
           {autoScroll ? "Disable Autoscroll?" : "Enable Autoscroll?"}

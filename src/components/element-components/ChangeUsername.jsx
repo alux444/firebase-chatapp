@@ -71,8 +71,6 @@ const ChangeUsername = ({ open, close }) => {
           query(messagesRef, where("username", "==", user.username))
         );
 
-        console.log(user.username);
-
         allMessagesFromUser.forEach((doc) => {
           updateDoc(doc.ref, {
             username: name,

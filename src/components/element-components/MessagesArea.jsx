@@ -40,7 +40,7 @@ const MessagesArea = () => {
     );
 
     return () => unsubscribe();
-  }, []);
+  }, [currentRoom]);
 
   useEffect(() => {
     if (autoScroll) {
