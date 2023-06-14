@@ -9,6 +9,16 @@ const About = () => {
         The source repository can be found{" "}
         <a href="https://github.com/alux444/firebase-chatapp">here.</a>
       </p>
+      <p>Features to be added:</p>
+      <small>
+        <s>Username changing with messages updating.</s>
+      </small>
+      <br />
+      <small>Private chatrooms</small>
+      <br />
+      <small>Current online users display</small>
+      <br />
+      <small>Image and link integration</small>
     </div>
   );
 };

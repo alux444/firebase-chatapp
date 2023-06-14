@@ -41,7 +41,7 @@ const MessagesArea = () => {
 
     return (
       <Box
-        key={message.id}
+        key={message.time}
         sx={{
           height: "min-content",
           width: "calc(100%-10px)",

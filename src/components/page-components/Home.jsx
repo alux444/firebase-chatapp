@@ -1,14 +1,23 @@
-import React from "react";
+import React, { useContext } from "react";
 import ChatRoom from "../element-components/ChatRoom";
 import SettingsNav from "../element-components/SettingsNav";
 import ChatNav from "../element-components/ChatNav";
+import { UserContext } from "../../App";
 
 const Home = () => {
+  const { user } = useContext(UserContext);
+
   return (
     <div>
-      <SettingsNav />
-      <ChatNav />
-      <ChatRoom />
+      {user.loggedIn ? (
+        <div>
+          <SettingsNav />
+          <ChatNav />
+          <ChatRoom />
+        </div>
+      ) : (
+        <p>Please login to access chatroom</p>
+      )}
     </div>
   );
 };

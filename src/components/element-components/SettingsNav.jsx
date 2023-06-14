@@ -23,8 +23,9 @@ const SettingsNav = () => {
 
   const googleSignOut = () => {
     signOut(auth).then((r) => {
-      setUser({ loggedIn: false, username: "" });
+      setUser({ loggedIn: false, username: "", email: "" });
     });
+    localStorage.removeItem("loggedInUser");
     navigate("/firebase-chatapp/");
   };
 
