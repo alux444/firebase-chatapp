@@ -71,8 +71,6 @@ const ChangeUsername = ({ open, close }) => {
           query(messagesRef, where("username", "==", user.username))
         );
 
-        console.log(user.username);
-
         allMessagesFromUser.forEach((doc) => {
           updateDoc(doc.ref, {
             username: name,
@@ -83,6 +81,13 @@ const ChangeUsername = ({ open, close }) => {
           ...prevUser,
           username: name,
         }));
+
+        const updatedUser = {
+          username: name,
+          email: user.email,
+        };
+
+        localStorage.setItem("loggedInUser", JSON.stringify(updatedUser));
 
         setError("Success! Your name was changed.");
       }
@@ -103,7 +108,6 @@ const ChangeUsername = ({ open, close }) => {
             alignItems: "center",
             width: "100%",
             height: "100%",
-            border: "1px solid red",
           }}
         >
           <Box
