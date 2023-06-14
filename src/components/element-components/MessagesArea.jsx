@@ -1,12 +1,19 @@
 import { Box, Typography } from "@mui/material";
-import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import {
+  collection,
+  onSnapshot,
+  orderBy,
+  query,
+  where,
+} from "firebase/firestore";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { db } from "../../../server/firebaseConfig";
-import { ScrollContext, UserContext } from "../../App";
+import { CurrentRoomContext, ScrollContext, UserContext } from "../../App";
 
 const MessagesArea = () => {
   const { user } = useContext(UserContext);
   const { autoScroll } = useContext(ScrollContext);
+  const { currentRoom } = useContext(CurrentRoomContext);
   const latestMessagesRef = useRef(null);
   const messagesRef = collection(db, "messages");
   const [messages, setMessages] = useState([]);
@@ -16,8 +23,14 @@ const MessagesArea = () => {
   };
 
   useEffect(() => {
+    console.log(currentRoom);
+
     const unsubscribe = onSnapshot(
-      query(messagesRef, orderBy("time", "asc")),
+      query(
+        messagesRef,
+        where("room", "==", currentRoom),
+        orderBy("time", "asc")
+      ),
       (querySnapshot) => {
         const newMessages = querySnapshot.docs.map((doc) => ({
           ...doc.data(),

@@ -2,12 +2,13 @@ import { Box } from "@mui/material";
 import React, { useContext, useState } from "react";
 import { db } from "../../../server/firebaseConfig";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import { UserContext } from "../../App";
+import { CurrentRoomContext, UserContext } from "../../App";
 
 const InputArea = () => {
   const [message, setMessage] = useState("");
   const { user } = useContext(UserContext);
   const messagesRef = collection(db, "messages");
+  const { currentRoom } = useContext(CurrentRoomContext);
 
   const handleChange = (e) => {
     if (e.target.value.length < 100) {
@@ -23,6 +24,7 @@ const InputArea = () => {
         time: serverTimestamp(),
         username: user.username,
         message: message,
+        room: currentRoom,
       });
     };
 
