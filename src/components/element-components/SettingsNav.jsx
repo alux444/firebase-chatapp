@@ -5,11 +5,13 @@ import { signOut } from "firebase/auth";
 import { auth } from "../../../server/firebaseConfig";
 import { useNavigate } from "react-router-dom";
 import ChangeUsername from "./ChangeUsername";
+import CreateRoom from "./CreateRoom";
 
 const SettingsNav = () => {
   const { user, setUser } = useContext(UserContext);
   const { autoScroll, setAutoScroll } = useContext(ScrollContext);
   const [openUsername, setOpenUsername] = useState(false);
+  const [openCreateRoom, setOpenCreateRoom] = useState(false);
 
   const openUsernameModal = () => {
     setOpenUsername(true);
@@ -17,6 +19,14 @@ const SettingsNav = () => {
 
   const closeUsernameModal = () => {
     setOpenUsername(false);
+  };
+
+  const openRoomModal = () => {
+    setOpenCreateRoom(true);
+  };
+
+  const closeRoomModal = () => {
+    setOpenCreateRoom(false);
   };
 
   const navigate = useNavigate();
@@ -45,12 +55,13 @@ const SettingsNav = () => {
         <Typography sx={{ marginLeft: "10px" }}>
           Welcome, {user.username}!
         </Typography>
-        <button>Create Chatroom?</button>
+        <button onClick={() => openRoomModal()}>Create Chatroom?</button>
         <button onClick={() => openUsernameModal()}>Change Name?</button>
         <button onClick={() => setAutoScroll(!autoScroll)}>
           {autoScroll ? "Disable Autoscroll?" : "Enable Autoscroll?"}
         </button>
         <ChangeUsername open={openUsername} close={closeUsernameModal} />
+        <CreateRoom open={openCreateRoom} close={closeRoomModal} />
       </Box>
       <button style={{ marginRight: "10px" }} onClick={googleSignOut}>
         Sign out

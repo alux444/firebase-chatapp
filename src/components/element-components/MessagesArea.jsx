@@ -23,8 +23,6 @@ const MessagesArea = () => {
   };
 
   useEffect(() => {
-    console.log(currentRoom);
-
     const unsubscribe = onSnapshot(
       query(
         messagesRef,
