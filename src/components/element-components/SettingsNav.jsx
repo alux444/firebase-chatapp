@@ -36,6 +36,7 @@ const SettingsNav = () => {
         border: "1px solid white",
         justifyContent: "space-between",
         alignItems: "center",
+        overflow: "auto",
         width: "90vw",
         padding: "10px 0px",
       }}
