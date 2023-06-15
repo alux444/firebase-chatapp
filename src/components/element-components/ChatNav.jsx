@@ -5,11 +5,12 @@ import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { db } from "../../../server/firebaseConfig";
 import LockIcon from "@mui/icons-material/Lock";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
-import { AttemptJoinRoom } from "../action-components/AttemptJoinRoom";
+import PrivateRoomModal from "../action-components/PrivateRoomModal";
 
 const ChatNav = () => {
   const { currentRoom, setCurrentRoom } = useContext(CurrentRoomContext);
   const [roomList, setRoomList] = useState([]);
+  const [openPassReq, setOpenPassReq] = useState(false);
   const roomsRef = collection(db, "activerooms");
 
   useEffect(() => {
@@ -31,13 +32,18 @@ const ChatNav = () => {
     return () => {
       unsubscribe();
     };
-  }, []);
+  }, [roomsRef]);
 
-  const handleJoin = (name, privacy) => {
-    const ableToJoin = AttemptJoinRoom(name, privacy);
-    if (ableToJoin) {
+  const handleJoin = (privacy) => {
+    if (!privacy) {
       setCurrentRoom(name);
+    } else {
+      setOpenPassReq(true);
     }
+  };
+
+  const closePasswordModal = () => {
+    setOpenPassReq(false);
   };
 
   const otherRooms = roomList.map((room) => {
@@ -87,6 +93,7 @@ const ChatNav = () => {
       >
         Public Chat
       </button>
+      <PrivateRoomModal open={openPassReq} close={closePasswordModal} />
       {otherRooms}
     </Box>
   );
