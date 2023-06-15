@@ -123,15 +123,25 @@ const ChangeUsername = ({ open, close }) => {
               background: "rgba(0,0,0,0.8)",
             }}
           >
-            <Box sx={{ display: "flex", justifyContent: "center" }}>
-              <form onSubmit={onSubmit}>
+            <Box>
+              <form
+                onSubmit={onSubmit}
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  flexDirection: "column",
+                  alignContent: "center",
+                }}
+              >
                 <input
                   type="text"
                   placeholder="Enter your new username"
                   value={newName}
                   onChange={handleChange}
                 />
-                <button type="submit">Change</button>
+                <button style={{ margin: "5px 0" }} type="submit">
+                  Change
+                </button>
               </form>
             </Box>
             <Typography sx={{ textAlign: "center" }}>{error}</Typography>

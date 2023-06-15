@@ -19,7 +19,11 @@ const MessagesArea = () => {
   const [messages, setMessages] = useState([]);
 
   const scroll = () => {
-    latestMessagesRef.current.scrollIntoView({ behavior: "smooth" });
+    latestMessagesRef.current.scrollIntoView({
+      behavior: "smooth",
+      block: "end",
+      inline: "nearest",
+    });
   };
 
   useEffect(() => {
@@ -93,12 +97,14 @@ const MessagesArea = () => {
   });
 
   return (
-    <Box sx={{ width: "100%", height: "85%", overflow: "auto" }}>
-      <button style={{ margin: "10px 0px" }} onClick={scroll}>
-        Scroll to Bottom
-      </button>
-      {mappedMessages}
-      <div ref={latestMessagesRef} />
+    <Box sx={{ width: "100%", height: "85%", overflow: "hidden" }}>
+      <Box sx={{ width: "100%", height: "85%", overflow: "auto" }}>
+        <button style={{ margin: "10px 0px" }} onClick={scroll}>
+          Scroll to Bottom
+        </button>
+        {mappedMessages}
+        <div ref={latestMessagesRef} />
+      </Box>
     </Box>
   );
 };
