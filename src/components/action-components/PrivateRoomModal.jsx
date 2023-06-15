@@ -2,10 +2,11 @@ import React, { useContext, useState, useRef, useEffect } from "react";
 import { Modal, Box, Typography } from "@mui/material";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../../server/firebaseConfig";
-import { UnlockedRoomsContext } from "../../App";
+import { CurrentRoomContext, UnlockedRoomsContext } from "../../App";
 
 const PrivateRoomModal = ({ open, close, roomName }) => {
   const { unlockedRooms, setUnlockedRooms } = useContext(UnlockedRoomsContext);
+  const { setCurrentRoom } = useContext(CurrentRoomContext);
   const [message, setMessage] = useState("");
   const [password, setPassword] = useState("");
   const roomsRef = collection(db, "activerooms");
@@ -50,6 +51,7 @@ const PrivateRoomModal = ({ open, close, roomName }) => {
     if (password === roomData.password) {
       setMessage("Success! You can now join.");
       setUnlockedRooms((prevRooms) => [...prevRooms, roomName]);
+      setCurrentRoom(roomName);
     } else {
       setMessage("Wrong Password!");
     }

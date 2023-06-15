@@ -14,9 +14,9 @@ const About = () => {
         <s>Username changing with messages updating.</s>
       </small>
       <br />
-      <small>Private chatrooms</small>
-      <br />
-      <small>Current online users display</small>
+      <small>
+        <s>Private chatrooms</s>
+      </small>
       <br />
       <small>Image and link integration</small>
     </div>

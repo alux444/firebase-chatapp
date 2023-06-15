@@ -10,7 +10,13 @@ const Home = () => {
   return (
     <div>
       {user.loggedIn ? (
-        <div>
+        <div
+          style={{
+            border: "1px solid red",
+            width: "85vw",
+            justifyContent: "center",
+          }}
+        >
           <SettingsNav />
           <ChatNav />
           <ChatRoom />

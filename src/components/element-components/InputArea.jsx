@@ -5,14 +5,16 @@ import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { CurrentRoomContext, UserContext } from "../../App";
 
 const InputArea = () => {
-  const [message, setMessage] = useState("");
+  const { currentRoom } = useContext(CurrentRoomContext);
   const { user } = useContext(UserContext);
   const messagesRef = collection(db, "messages");
-  const { currentRoom } = useContext(CurrentRoomContext);
+  const [message, setMessage] = useState("");
 
   const handleChange = (e) => {
-    if (e.target.value.length < 100) {
+    if (e.target.value.length < 200) {
       setMessage(e.target.value);
+    } else {
+      alert("Character limit reached!");
     }
   };
 

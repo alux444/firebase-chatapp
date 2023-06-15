@@ -88,7 +88,7 @@ const ChatNav = () => {
         border: "1px solid white",
 
         alignItems: "center",
-        width: "90vw",
+        width: "100%",
         overflow: "auto",
       }}
     >

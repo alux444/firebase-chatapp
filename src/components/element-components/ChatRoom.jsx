@@ -7,7 +7,7 @@ const ChatRoom = () => {
   return (
     <Box
       sx={{
-        width: "90vw",
+        width: "100%",
         height: "70vh",
         border: "1px solid white",
       }}
