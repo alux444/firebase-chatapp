@@ -85,7 +85,15 @@ const PrivateRoomModal = ({ open, close, roomName }) => {
               gap: "10px",
             }}
           >
-            <form onSubmit={onSubmit}>
+            <form
+              onSubmit={onSubmit}
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                flexDirection: "column",
+                alignContent: "center",
+              }}
+            >
               <label>Input Password to {roomName}</label>
               <input
                 type="password"

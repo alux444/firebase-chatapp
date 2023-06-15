@@ -129,7 +129,16 @@ const CreateRoom = ({ open, close }) => {
           >
             <Box sx={{ display: "flex", justifyContent: "center" }}>
               <div>
-                <form onSubmit={onSubmit}>
+                <form
+                  onSubmit={onSubmit}
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    flexDirection: "column",
+                    alignContent: "center",
+                    gap: "5px",
+                  }}
+                >
                   <label>Room Name</label>
                   <input
                     type="text"
@@ -157,8 +166,8 @@ const CreateRoom = ({ open, close }) => {
                     </Box>
                   ) : null}
                   <button type="submit">Create Room</button>
+                  <button onClick={() => deleteRoom()}>Delete Room</button>
                 </form>
-                <button onClick={() => deleteRoom()}>Delete Room</button>
 
                 <Typography sx={{ textAlign: "center" }}>{message}</Typography>
               </div>
