@@ -11,6 +11,7 @@ const ChatNav = () => {
   const { currentRoom, setCurrentRoom } = useContext(CurrentRoomContext);
   const [roomList, setRoomList] = useState([]);
   const [openPassReq, setOpenPassReq] = useState(false);
+  const [currentAttempt, setCurrentAttempt] = useState();
   const roomsRef = collection(db, "activerooms");
 
   useEffect(() => {
@@ -34,10 +35,11 @@ const ChatNav = () => {
     };
   }, [roomsRef]);
 
-  const handleJoin = (privacy) => {
+  const handleJoin = (name, privacy) => {
     if (!privacy) {
       setCurrentRoom(name);
     } else {
+      setCurrentAttempt(name);
       setOpenPassReq(true);
     }
   };
@@ -93,8 +95,12 @@ const ChatNav = () => {
       >
         Public Chat
       </button>
-      <PrivateRoomModal open={openPassReq} close={closePasswordModal} />
       {otherRooms}
+      <PrivateRoomModal
+        open={openPassReq}
+        close={closePasswordModal}
+        roomName={currentAttempt}
+      />
     </Box>
   );
 };
