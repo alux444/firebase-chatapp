@@ -1,17 +1,11 @@
 import React, { useContext, useState, useRef, useEffect } from "react";
 import { Modal, Box, Typography } from "@mui/material";
-import {
-  collection,
-  getDocs,
-  query,
-  where,
-  addDoc,
-  serverTimestamp,
-} from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../../server/firebaseConfig";
-import { UserContext } from "../../App";
+import { UnlockedRoomsContext } from "../../App";
 
 const PrivateRoomModal = ({ open, close, roomName }) => {
+  const { unlockedRooms, setUnlockedRooms } = useContext(UnlockedRoomsContext);
   const [message, setMessage] = useState("");
   const [password, setPassword] = useState("");
   const roomsRef = collection(db, "activerooms");
@@ -54,10 +48,13 @@ const PrivateRoomModal = ({ open, close, roomName }) => {
     const roomData = userRoom.docs[0].data();
 
     if (password === roomData.password) {
-      setMessage("Success!");
+      setMessage("Success! You can now join.");
+      setUnlockedRooms((prevRooms) => [...prevRooms, roomName]);
     } else {
       setMessage("Wrong Password!");
     }
+
+    console.log(unlockedRooms);
   };
 
   return (
@@ -75,14 +72,15 @@ const PrivateRoomModal = ({ open, close, roomName }) => {
           <Box
             ref={modalRef}
             sx={{
-              width: "50vw",
-              height: "25vh",
+              padding: "15px",
+              width: "min-content",
+              height: "min-content",
               border: "1px solid white",
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              flexDirection: "column",
               background: "rgba(0,0,0,0.8)",
+              gap: "10px",
             }}
           >
             <form onSubmit={onSubmit}>

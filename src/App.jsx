@@ -8,6 +8,7 @@ import Footer from "./components/element-components/Footer";
 export const UserContext = createContext();
 export const ScrollContext = createContext();
 export const CurrentRoomContext = createContext();
+export const UnlockedRoomsContext = createContext();
 
 function App() {
   const [user, setUser] = useState({
@@ -17,16 +18,21 @@ function App() {
   });
   const [autoScroll, setAutoScroll] = useState(true);
   const [currentRoom, setCurrentRoom] = useState("public");
+  const [unlockedRooms, setUnlockedRooms] = useState([]);
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
       <ScrollContext.Provider value={{ autoScroll, setAutoScroll }}>
         <CurrentRoomContext.Provider value={{ currentRoom, setCurrentRoom }}>
-          <BrowserRouter>
-            <NavBar />
-            <Views />
-            <Footer />
-          </BrowserRouter>
+          <UnlockedRoomsContext.Provider
+            value={{ unlockedRooms, setUnlockedRooms }}
+          >
+            <BrowserRouter>
+              <NavBar />
+              <Views />
+              <Footer />
+            </BrowserRouter>
+          </UnlockedRoomsContext.Provider>
         </CurrentRoomContext.Provider>
       </ScrollContext.Provider>
     </UserContext.Provider>

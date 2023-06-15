@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Box, Typography } from "@mui/material";
-import { CurrentRoomContext } from "../../App";
+import { CurrentRoomContext, UnlockedRoomsContext } from "../../App";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { db } from "../../../server/firebaseConfig";
 import LockIcon from "@mui/icons-material/Lock";
@@ -9,6 +9,7 @@ import PrivateRoomModal from "../action-components/PrivateRoomModal";
 
 const ChatNav = () => {
   const { currentRoom, setCurrentRoom } = useContext(CurrentRoomContext);
+  const { unlockedRooms } = useContext(UnlockedRoomsContext);
   const [roomList, setRoomList] = useState([]);
   const [openPassReq, setOpenPassReq] = useState(false);
   const [currentAttempt, setCurrentAttempt] = useState();
@@ -39,8 +40,13 @@ const ChatNav = () => {
     if (!privacy) {
       setCurrentRoom(name);
     } else {
-      setCurrentAttempt(name);
-      setOpenPassReq(true);
+      if (unlockedRooms.includes(name)) {
+        console.log(unlockedRooms);
+        setCurrentRoom(name);
+      } else {
+        setCurrentAttempt(name);
+        setOpenPassReq(true);
+      }
     }
   };
 

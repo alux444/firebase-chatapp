@@ -113,19 +113,16 @@ const ChangeUsername = ({ open, close }) => {
           <Box
             ref={modalRef}
             sx={{
-              width: "50vw",
-              height: "20vh",
+              width: "min-content",
+              padding: "15px",
+              height: "min-content",
               border: "1px solid white",
               flexDirection: "column",
               justifyContent: "center",
               alignItems: "center",
+              background: "rgba(0,0,0,0.8)",
             }}
           >
-            <Box sx={{ display: "block" }}>
-              <button style={{ margin: "10px" }} onClick={close}>
-                Close
-              </button>
-            </Box>
             <Box sx={{ display: "flex", justifyContent: "center" }}>
               <form onSubmit={onSubmit}>
                 <input
