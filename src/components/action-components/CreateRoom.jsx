@@ -133,7 +133,7 @@ const CreateRoom = ({ open, close }) => {
                   <label>Room Name</label>
                   <input
                     type="text"
-                    placeholder="Enter your new username"
+                    placeholder="Enter your roomname"
                     value={roomName}
                     onChange={handleChangeName}
                   />

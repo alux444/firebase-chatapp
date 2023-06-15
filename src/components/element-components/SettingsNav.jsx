@@ -47,7 +47,7 @@ const SettingsNav = () => {
         justifyContent: "space-between",
         alignItems: "center",
         overflow: "auto",
-        width: "90vw",
+        width: "100%",
         padding: "10px 0px",
       }}
     >
