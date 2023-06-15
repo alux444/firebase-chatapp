@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { CurrentRoomContext, UnlockedRoomsContext } from "../../App";
-import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "../../../server/firebaseConfig";
 import LockIcon from "@mui/icons-material/Lock";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
+import RefreshIcon from "@mui/icons-material/Refresh";
 import PrivateRoomModal from "../action-components/PrivateRoomModal";
 
 const ChatNav = () => {
@@ -15,26 +16,26 @@ const ChatNav = () => {
   const [currentAttempt, setCurrentAttempt] = useState();
   const roomsRef = collection(db, "activerooms");
 
-  useEffect(() => {
-    const rooms = [];
-
-    const unsubscribe = onSnapshot(
-      query(roomsRef, orderBy("time", "asc")),
-      (querySnapshot) => {
-        const newRooms = querySnapshot.docs.map((doc) => ({
-          ...doc.data(),
-        }));
-        newRooms.map((room) => {
-          rooms.push({ name: room.name, privacy: room.privacy });
-        });
-        setRoomList(rooms);
-      }
+  const getRooms = async () => {
+    const querySnapshot = await getDocs(
+      query(roomsRef, orderBy("time", "asc"))
     );
 
-    return () => {
-      unsubscribe();
-    };
-  }, [roomsRef]);
+    const newRooms = querySnapshot.docs.map((doc) => ({
+      ...doc.data(),
+    }));
+
+    const rooms = newRooms.map((room) => ({
+      name: room.name,
+      privacy: room.privacy,
+    }));
+
+    setRoomList(rooms);
+  };
+
+  useEffect(() => {
+    getRooms();
+  }, []);
 
   const handleJoin = (name, privacy) => {
     if (!privacy) {
@@ -92,6 +93,9 @@ const ChatNav = () => {
         overflow: "auto",
       }}
     >
+      <button onClick={() => getRooms()} style={{ margin: "5px" }}>
+        <RefreshIcon />
+      </button>
       <button
         style={{
           margin: "5px",
