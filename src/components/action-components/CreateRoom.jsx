@@ -7,6 +7,8 @@ import {
   where,
   addDoc,
   serverTimestamp,
+  deleteDoc,
+  doc,
 } from "firebase/firestore";
 import { db } from "../../../server/firebaseConfig";
 import { UserContext } from "../../App";
@@ -83,6 +85,23 @@ const CreateRoom = ({ open, close }) => {
     }
   };
 
+  const deleteRoom = async () => {
+    const userRoom = await getDocs(
+      query(roomsRef, where("owner", "==", user.email))
+    );
+
+    if (userRoom.empty) {
+      setMessage("You don't have a room!");
+      return;
+    }
+
+    if (!userRoom.empty) {
+      const roomId = userRoom.docs[0].id;
+      await deleteDoc(doc(roomsRef, roomId));
+      setMessage("Your room has been deleted.");
+    }
+  };
+
   return (
     <Box>
       <Modal open={open}>
@@ -98,49 +117,52 @@ const CreateRoom = ({ open, close }) => {
           <Box
             ref={modalRef}
             sx={{
-              width: "50vw",
-              height: "50vh",
+              padding: "15px",
+              width: "min-content",
+              height: "min-content",
               border: "1px solid white",
+              display: "flex",
               justifyContent: "center",
               alignItems: "center",
               background: "rgba(0,0,0,0.8)",
             }}
           >
-            <Box sx={{ display: "block" }}>
-              <button style={{ margin: "10px" }} onClick={close}>
-                Close
-              </button>
-            </Box>
             <Box sx={{ display: "flex", justifyContent: "center" }}>
-              <form onSubmit={onSubmit}>
-                <label>Room Name</label>
-                <input
-                  type="text"
-                  placeholder="Enter your new username"
-                  value={roomName}
-                  onChange={handleChangeName}
-                />
-                <Box sx={{ display: "flex" }}>
-                  <p>Private room?</p>
+              <div>
+                <form onSubmit={onSubmit}>
+                  <label>Room Name</label>
                   <input
-                    type="checkbox"
-                    onChange={(event) => setPrivateStatus(event.target.checked)}
+                    type="text"
+                    placeholder="Enter your new username"
+                    value={roomName}
+                    onChange={handleChangeName}
                   />
-                </Box>
-                {privateStatus ? (
-                  <Box>
-                    <label>Room Password</label>
+                  <Box sx={{ display: "flex" }}>
+                    <p>Private room?</p>
                     <input
-                      type="text"
-                      value={roomPassword}
-                      onChange={handleChangePass}
+                      type="checkbox"
+                      onChange={(event) =>
+                        setPrivateStatus(event.target.checked)
+                      }
                     />
                   </Box>
-                ) : null}
-                <button type="submit">Create Room</button>
-              </form>
+                  {privateStatus ? (
+                    <Box>
+                      <label>Room Password</label>
+                      <input
+                        type="text"
+                        value={roomPassword}
+                        onChange={handleChangePass}
+                      />
+                    </Box>
+                  ) : null}
+                  <button type="submit">Create Room</button>
+                </form>
+                <button onClick={() => deleteRoom()}>Delete Room</button>
+
+                <Typography sx={{ textAlign: "center" }}>{message}</Typography>
+              </div>
             </Box>
-            <Typography sx={{ textAlign: "center" }}>{message}</Typography>
           </Box>
         </Box>
       </Modal>

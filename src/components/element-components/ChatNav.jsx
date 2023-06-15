@@ -1,12 +1,18 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Box, Typography } from "@mui/material";
-import { CurrentRoomContext } from "../../App";
+import { CurrentRoomContext, UnlockedRoomsContext } from "../../App";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { db } from "../../../server/firebaseConfig";
+import LockIcon from "@mui/icons-material/Lock";
+import LockOpenIcon from "@mui/icons-material/LockOpen";
+import PrivateRoomModal from "../action-components/PrivateRoomModal";
 
 const ChatNav = () => {
   const { currentRoom, setCurrentRoom } = useContext(CurrentRoomContext);
+  const { unlockedRooms } = useContext(UnlockedRoomsContext);
   const [roomList, setRoomList] = useState([]);
+  const [openPassReq, setOpenPassReq] = useState(false);
+  const [currentAttempt, setCurrentAttempt] = useState();
   const roomsRef = collection(db, "activerooms");
 
   useEffect(() => {
@@ -28,7 +34,25 @@ const ChatNav = () => {
     return () => {
       unsubscribe();
     };
-  }, []);
+  }, [roomsRef]);
+
+  const handleJoin = (name, privacy) => {
+    if (!privacy) {
+      setCurrentRoom(name);
+    } else {
+      if (unlockedRooms.includes(name)) {
+        console.log(unlockedRooms);
+        setCurrentRoom(name);
+      } else {
+        setCurrentAttempt(name);
+        setOpenPassReq(true);
+      }
+    }
+  };
+
+  const closePasswordModal = () => {
+    setOpenPassReq(false);
+  };
 
   const otherRooms = roomList.map((room) => {
     return (
@@ -37,10 +61,22 @@ const ChatNav = () => {
         style={{
           margin: "5px",
           borderColor: currentRoom === room.name ? "red" : "",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
         }}
-        onClick={() => setCurrentRoom(room.name)}
+        onClick={() => {
+          handleJoin(room.name, room.privacy);
+        }}
       >
-        Join {room.name}
+        <small>
+          Join {room.name}
+          {room.privacy ? (
+            <LockIcon style={{ fontSize: "inherit" }} />
+          ) : (
+            <LockOpenIcon style={{ fontSize: "inherit" }} />
+          )}
+        </small>
       </button>
     );
   });
@@ -66,6 +102,11 @@ const ChatNav = () => {
         Public Chat
       </button>
       {otherRooms}
+      <PrivateRoomModal
+        open={openPassReq}
+        close={closePasswordModal}
+        roomName={currentAttempt}
+      />
     </Box>
   );
 };
