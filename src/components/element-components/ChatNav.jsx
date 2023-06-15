@@ -3,6 +3,9 @@ import { Box, Typography } from "@mui/material";
 import { CurrentRoomContext } from "../../App";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { db } from "../../../server/firebaseConfig";
+import LockIcon from "@mui/icons-material/Lock";
+import LockOpenIcon from "@mui/icons-material/LockOpen";
+import { AttemptJoinRoom } from "../action-components/AttemptJoinRoom";
 
 const ChatNav = () => {
   const { currentRoom, setCurrentRoom } = useContext(CurrentRoomContext);
@@ -30,6 +33,13 @@ const ChatNav = () => {
     };
   }, []);
 
+  const handleJoin = (name, privacy) => {
+    const ableToJoin = AttemptJoinRoom(name, privacy);
+    if (ableToJoin) {
+      setCurrentRoom(name);
+    }
+  };
+
   const otherRooms = roomList.map((room) => {
     return (
       <button
@@ -37,10 +47,22 @@ const ChatNav = () => {
         style={{
           margin: "5px",
           borderColor: currentRoom === room.name ? "red" : "",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
         }}
-        onClick={() => setCurrentRoom(room.name)}
+        onClick={() => {
+          handleJoin(room.name, room.privacy);
+        }}
       >
-        Join {room.name}
+        <small>
+          Join {room.name}
+          {room.privacy ? (
+            <LockIcon style={{ fontSize: "inherit" }} />
+          ) : (
+            <LockOpenIcon style={{ fontSize: "inherit" }} />
+          )}
+        </small>
       </button>
     );
   });
