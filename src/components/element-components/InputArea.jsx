@@ -3,12 +3,19 @@ import React, { useContext, useState } from "react";
 import { db } from "../../../server/firebaseConfig";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { CurrentRoomContext, UserContext } from "../../App";
+import { ref, uploadBytes, getDownloadURL, getStorage } from "firebase/storage";
+import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
+import UploadImage from "../action-components/UploadImage";
+import { v4 as uuidv4 } from "uuid";
 
 const InputArea = () => {
   const { currentRoom } = useContext(CurrentRoomContext);
   const { user } = useContext(UserContext);
   const messagesRef = collection(db, "messages");
   const [message, setMessage] = useState("");
+  const [image, setImage] = useState(null);
+  const [upload, setUpload] = useState(false);
+  const storage = getStorage();
 
   const handleChange = (e) => {
     if (e.target.value.length < 200) {
@@ -18,8 +25,24 @@ const InputArea = () => {
     }
   };
 
-  const handleSendMessage = (e) => {
+  const handleSendMessage = async (e) => {
     e.preventDefault();
+
+    let url = "";
+
+    if (image) {
+      try {
+        const storageRef = ref(storage, "images/" + uuidv4());
+        await uploadBytes(storageRef, image);
+        const downloadURL = await getDownloadURL(storageRef);
+        url = downloadURL;
+      } catch (error) {
+        console.error("Error uploading image:", error);
+      } finally {
+      }
+    }
+
+    console.log(url);
 
     const createMessage = async () => {
       await addDoc(messagesRef, {
@@ -27,6 +50,7 @@ const InputArea = () => {
         username: user.username,
         message: message,
         room: currentRoom,
+        image: url,
       });
     };
 
@@ -34,6 +58,16 @@ const InputArea = () => {
       createMessage();
       setMessage("");
     }
+
+    setImage(null);
+  };
+
+  const closeUpload = () => {
+    setUpload(false);
+  };
+
+  const setToImage = (image) => {
+    setImage(image);
   };
 
   return (
@@ -69,7 +103,15 @@ const InputArea = () => {
         <button style={{ width: "90px", margin: "5px" }} type="submit">
           Send
         </button>
+        <button
+          style={{ margin: "5px" }}
+          type="button"
+          onClick={() => setUpload(true)}
+        >
+          <AddPhotoAlternateIcon fontSize="small" />
+        </button>
       </form>
+      <UploadImage open={upload} close={closeUpload} setImage={setToImage} />
     </Box>
   );
 };

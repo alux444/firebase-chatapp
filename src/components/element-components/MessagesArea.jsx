@@ -90,6 +90,11 @@ const MessagesArea = () => {
             }}
           >
             {message.message}
+            <br />
+            <img
+              src={message.image}
+              style={{ maxWidth: "50vw", maxHeight: "20vh" }}
+            />
           </Typography>
         </Box>
       </Box>
