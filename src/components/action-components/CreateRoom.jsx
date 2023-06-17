@@ -79,7 +79,7 @@ const CreateRoom = ({ open, close }) => {
 
     if (userRoom.empty) {
       createRoom();
-      setMessage("Success! Room created.");
+      setMessage("Success! Room created. Refresh the room list to see it!");
     } else {
       setMessage("You already have a chatroom!");
     }

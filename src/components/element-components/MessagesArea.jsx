@@ -81,7 +81,7 @@ const MessagesArea = () => {
                 message.username === user.username ? "flex-end" : "flex-start",
               border: "2px solid #646cff;",
               padding: "5px",
-              margin: "0 5px",
+              margin: "2px 10px",
               borderRadius: "10px",
               wordBreak: "break-word",
               maxWidth: "80%",
@@ -98,7 +98,7 @@ const MessagesArea = () => {
 
   return (
     <Box sx={{ width: "100%", height: "85%", overflow: "hidden" }}>
-      <Box sx={{ width: "100%", height: "85%", overflow: "auto" }}>
+      <Box sx={{ width: "100%", height: "100%", overflow: "auto" }}>
         <button style={{ margin: "10px 0px" }} onClick={scroll}>
           Scroll to Bottom
         </button>
