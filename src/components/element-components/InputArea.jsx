@@ -15,6 +15,7 @@ const InputArea = () => {
   const [message, setMessage] = useState("");
   const [image, setImage] = useState(null);
   const [upload, setUpload] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const storage = getStorage();
 
   const handleChange = (e) => {
@@ -23,11 +24,12 @@ const InputArea = () => {
     } else {
       alert("Character limit reached!");
     }
+    console.log(image);
   };
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
-
+    setUploading(true);
     let url = "";
 
     if (image) {
@@ -41,8 +43,6 @@ const InputArea = () => {
       } finally {
       }
     }
-
-    console.log(url);
 
     const createMessage = async () => {
       await addDoc(messagesRef, {
@@ -60,6 +60,7 @@ const InputArea = () => {
     }
 
     setImage(null);
+    setUploading(false);
   };
 
   const closeUpload = () => {
@@ -99,12 +100,16 @@ const InputArea = () => {
             width: "85%",
             margin: "5px",
           }}
+          disabled={uploading}
         />
         <button style={{ width: "90px", margin: "5px" }} type="submit">
           Send
         </button>
         <button
-          style={{ margin: "5px" }}
+          style={{
+            margin: "5px",
+            border: image && "2px solid green",
+          }}
           type="button"
           onClick={() => setUpload(true)}
         >

@@ -1,10 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Modal, Box, Typography } from "@mui/material";
-import { db } from "../../../server/firebaseConfig";
 
 const UploadImage = ({ open, close, setImage }) => {
   const [uploading, setUploading] = useState(false);
-  const [file, setFile] = useState();
+  const [file, setFile] = useState(null);
 
   const modalRef = useRef(null);
 
@@ -30,6 +29,13 @@ const UploadImage = ({ open, close, setImage }) => {
     e.preventDefault();
 
     setImage(file);
+
+    close();
+  };
+
+  const removeImage = () => {
+    setFile(null);
+    setImage(null);
     close();
   };
 
@@ -79,6 +85,9 @@ const UploadImage = ({ open, close, setImage }) => {
                 />
                 <button style={{ margin: "5px 0" }} type="submit">
                   OK
+                </button>
+                <button onClick={removeImage} type="button">
+                  Remove image
                 </button>
               </form>
             </Box>
