@@ -24,6 +24,7 @@ const InputArea = () => {
     } else {
       alert("Character limit reached!");
     }
+    console.log(image);
   };
 
   const handleSendMessage = async (e) => {
@@ -42,8 +43,6 @@ const InputArea = () => {
       } finally {
       }
     }
-
-    console.log(url);
 
     const createMessage = async () => {
       await addDoc(messagesRef, {
