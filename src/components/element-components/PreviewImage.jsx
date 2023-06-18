@@ -45,12 +45,13 @@ const PreviewImage = ({ open, close, image }) => {
               justifyContent: "center",
               alignItems: "center",
               background: "rgba(0,0,0,0.8)",
+              borderRadius: "20px",
             }}
           >
             <Box>
               <img
                 src={image}
-                style={{ maxWidth: "100%", maxHeight: "100%" }}
+                style={{ maxWidth: "90vw", maxHeight: "90vh" }}
               />
             </Box>
           </Box>
