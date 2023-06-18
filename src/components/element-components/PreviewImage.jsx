@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from "react";
-import { Modal, Box, Typography } from "@mui/material";
+import { Modal, Box } from "@mui/material";
 
 const PreviewImage = ({ open, close, image }) => {
   const modalRef = useRef(null);
@@ -20,7 +20,7 @@ const PreviewImage = ({ open, close, image }) => {
     return () => {
       document.removeEventListener("mousedown", handleOutsideClick);
     };
-  }, []);
+  }, [open, close]);
 
   return (
     <Box>
@@ -40,6 +40,8 @@ const PreviewImage = ({ open, close, image }) => {
               width: "min-content",
               padding: "15px",
               height: "min-content",
+              maxWidth: "90vw",
+              maxHeight: "90vh",
               border: "1px solid white",
               flexDirection: "column",
               justifyContent: "center",
@@ -51,7 +53,7 @@ const PreviewImage = ({ open, close, image }) => {
             <Box>
               <img
                 src={image}
-                style={{ maxWidth: "90vw", maxHeight: "90vh" }}
+                style={{ maxWidth: "85vw", maxHeight: "85vh" }}
               />
             </Box>
           </Box>
