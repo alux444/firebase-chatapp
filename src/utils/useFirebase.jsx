@@ -5,19 +5,27 @@ import { db } from "../../server/firebaseConfig";
 import { query } from "firebase/database";
 
 const useFirebase = () => {
-  const { user, setUser } = useContext(UserContext);
+  const { setUser } = useContext(UserContext);
   const usersRef = collection(db, "users");
 
-  const createUser = async (username, email) => {
+  const createUser = async (username, email, googleUser, password) => {
     const querySnapshot = await getDocs(
       query(usersRef, where("email", "==", email))
     );
 
     if (querySnapshot.empty) {
-      await addDoc(usersRef, {
-        username: username,
-        email: email,
-      });
+      if (googleUser) {
+        await addDoc(usersRef, {
+          username: username,
+          email: email,
+        });
+      } else {
+        await addDoc(usersRef, {
+          username: username,
+          email: email,
+          password: password,
+        });
+      }
     }
   };
 
@@ -34,7 +42,7 @@ const useFirebase = () => {
       localStorage.setItem("loggedInUser", JSON.stringify({ username, email }));
     } else {
       const username = email.split("@")[0];
-      createUser(username, email);
+      createUser(username, email, true);
       setUser({ loggedIn: true, username: username, email: email });
       localStorage.setItem("loggedInUser", JSON.stringify({ username, email }));
     }

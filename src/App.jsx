@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import "./App.css";
 import { BrowserRouter } from "react-router-dom";
 import Views from "./components/page-components/Views";
@@ -19,6 +19,14 @@ function App() {
   const [autoScroll, setAutoScroll] = useState(true);
   const [currentRoom, setCurrentRoom] = useState("public");
   const [unlockedRooms, setUnlockedRooms] = useState([]);
+
+  useEffect(() => {
+    const loggedInUser = localStorage.getItem("loggedInUser");
+    if (loggedInUser) {
+      const { username, email } = JSON.parse(loggedInUser);
+      setUser({ loggedIn: true, username, email });
+    }
+  }, []);
 
   return (
     <UserContext.Provider value={{ user, setUser }}>

@@ -3,8 +3,6 @@ import { Box } from "@mui/material";
 import { auth, provider } from "../../../server/firebaseConfig";
 import { signInWithPopup } from "firebase/auth";
 import { UserContext } from "../../App";
-import { collection, addDoc, getDocs, query, where } from "firebase/firestore";
-import { db } from "../../../server/firebaseConfig";
 import { useNavigate } from "react-router-dom";
 import FormStatus from "../element-components/FormStatus";
 import useFirebase from "../../utils/useFirebase";
@@ -15,9 +13,7 @@ const Login = () => {
   const [disableButton, setDisableButton] = useState(false);
   const navigate = useNavigate();
 
-  const { createUser, googleAttemptLogin } = useFirebase();
-
-  const usersRef = collection(db, "users");
+  const { googleAttemptLogin } = useFirebase();
 
   const googleSignIn = () => {
     setDisableButton(true);
@@ -32,14 +28,6 @@ const Login = () => {
       setDisableButton(false);
     }, 30000);
   };
-
-  useEffect(() => {
-    const loggedInUser = localStorage.getItem("loggedInUser");
-    if (loggedInUser) {
-      const { username, email } = JSON.parse(loggedInUser);
-      setUser({ loggedIn: true, username, email });
-    }
-  }, []);
 
   return (
     <Box>
