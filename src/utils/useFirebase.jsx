@@ -79,6 +79,7 @@ const useFirebase = () => {
         return true;
       }
     }
+
     return false;
   };
 

@@ -60,7 +60,7 @@ const SignupForm = ({ changePage }) => {
         <small>Confirm Password</small>
         <input type="password" value={confirm} onChange={confirmHandle} />
       </div>
-      <button type="submit" className="">
+      <button type="submit" className="mt-2">
         Sign up
       </button>
       <small>{message}</small>
