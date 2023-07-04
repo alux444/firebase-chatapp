@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Box } from "@mui/material";
 import MessagesArea from "./MessagesArea";
 import InputArea from "./InputArea";
+import { UserContext } from "../../App";
+import { Link } from "react-router-dom";
 
 const ChatRoom = () => {
+  const { user } = useContext(UserContext);
   return (
     <Box
       sx={{
@@ -13,7 +16,16 @@ const ChatRoom = () => {
       }}
     >
       <MessagesArea />
-      <InputArea />
+      {user.loggedIn ? (
+        <InputArea />
+      ) : (
+        <div className="">
+          <p>Login to chat</p>
+          <Link to="/firebase-chatapp/">
+            <button>Login Page</button>
+          </Link>
+        </div>
+      )}
     </Box>
   );
 };

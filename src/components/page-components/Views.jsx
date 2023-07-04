@@ -3,21 +3,8 @@ import { Route, Routes, useNavigate, useLocation } from "react-router-dom";
 import Login from "./Login";
 import About from "./About";
 import Home from "./Home";
-import { UserContext } from "../../App";
 
 const Views = () => {
-  const { user } = useContext(UserContext);
-  const navigate = useNavigate();
-
-  const location = useLocation();
-  const pathname = location.pathname;
-
-  // useEffect(() => {
-  //   if (!user.loggedIn && pathname === "/firebase-chatapp/home") {
-  //     navigate("/firebase-chatapp/");
-  //   }
-  // }, [user, navigate]);
-
   return (
     <Routes>
       <Route path="/firebase-chatapp/" element={<Login />} />

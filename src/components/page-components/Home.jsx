@@ -6,23 +6,27 @@ import { UserContext } from "../../App";
 
 const Home = () => {
   const { user } = useContext(UserContext);
-
   return (
     <div>
-      {user.loggedIn ? (
-        <div
-          style={{
-            width: "85vw",
-            justifyContent: "center",
-          }}
-        >
-          <SettingsNav />
-          <ChatNav />
-          <ChatRoom />
-        </div>
-      ) : (
-        <p>Please login to access chatroom</p>
-      )}
+      <div
+        style={{
+          width: "85vw",
+          justifyContent: "center",
+        }}
+      >
+        {user.loggedIn ? (
+          <div>
+            <SettingsNav />
+            <ChatNav />
+          </div>
+        ) : (
+          <div>
+            <p>Public Chatroom Preview</p>
+            <small>Login to access other rooms.</small>
+          </div>
+        )}
+        <ChatRoom />
+      </div>
     </div>
   );
 };

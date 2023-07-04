@@ -24,7 +24,6 @@ const InputArea = () => {
     } else {
       alert("Character limit reached!");
     }
-    console.log(image);
   };
 
   const handleSendMessage = async (e) => {
