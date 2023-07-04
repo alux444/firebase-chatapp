@@ -48,6 +48,14 @@ const ChangeUsername = ({ open, close }) => {
 
     setError("");
 
+    const processedName = newName.replace(/\s/g, "");
+    const validName = processedName.length > 1;
+
+    if (!validName) {
+      setError("Invalid name.");
+      return;
+    }
+
     const tryChange = async (name) => {
       const querySnapshot = await getDocs(
         query(usersRef, where("username", "==", name))

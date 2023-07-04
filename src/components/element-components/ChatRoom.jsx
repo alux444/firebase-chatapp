@@ -19,12 +19,21 @@ const ChatRoom = () => {
       {user.loggedIn ? (
         <InputArea />
       ) : (
-        <div className="">
+        <Box
+          sx={{
+            width: "100%",
+            height: "15%",
+            border: "1px solid white",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+          }}
+        >
           <p>Login to chat</p>
           <Link to="/firebase-chatapp/">
             <button>Login Page</button>
           </Link>
-        </div>
+        </Box>
       )}
     </Box>
   );
