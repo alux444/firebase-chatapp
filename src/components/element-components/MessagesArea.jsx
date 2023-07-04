@@ -10,6 +10,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { db } from "../../../server/firebaseConfig";
 import { CurrentRoomContext, ScrollContext, UserContext } from "../../App";
 import MessageBox from "./MessageBox";
+import waves from "../../img/waves.svg";
 
 const MessagesArea = () => {
   const { autoScroll } = useContext(ScrollContext);
@@ -56,7 +57,16 @@ const MessagesArea = () => {
 
   return (
     <Box sx={{ width: "100%", height: "85%", overflow: "hidden" }}>
-      <Box sx={{ width: "100%", height: "100%", overflow: "auto" }}>
+      <Box
+        sx={{
+          width: "100%",
+          height: "100%",
+          overflow: "auto",
+          backgroundImage: `url(${waves})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
         <button style={{ margin: "10px 0px" }} onClick={scroll}>
           Scroll to Bottom
         </button>
