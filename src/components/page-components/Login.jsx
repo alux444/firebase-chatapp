@@ -15,7 +15,7 @@ const Login = () => {
   const [disableButton, setDisableButton] = useState(false);
   const navigate = useNavigate();
 
-  const { createUser } = useFirebase();
+  const { createUser, googleAttemptLogin } = useFirebase();
 
   const usersRef = collection(db, "users");
 
@@ -23,36 +23,14 @@ const Login = () => {
     setDisableButton(true);
     setMessage("Loading...");
 
-    const searchForUser = async (email) => {
-      const querySnapshot = await getDocs(
-        query(usersRef, where("email", "==", email))
-      );
-
-      if (!querySnapshot.empty) {
-        setMessage("Found user, logging you in...");
-        const userDoc = querySnapshot.docs[0];
-        const userData = userDoc.data();
-        const username = userData.username;
-        setUser({ loggedIn: true, username: username, email: email });
-        localStorage.setItem(
-          "loggedInUser",
-          JSON.stringify({ username, email })
-        );
-      } else {
-        const username = email.split("@")[0];
-        setMessage("New user! Creating account...");
-        createUser(username, email);
-        setUser({ loggedIn: true, username: username, email: email });
-        localStorage.setItem(
-          "loggedInUser",
-          JSON.stringify({ username, email })
-        );
-      }
-    };
-
     signInWithPopup(auth, provider).then((result) => {
-      searchForUser(result.user.email);
+      googleAttemptLogin(result.user.email);
     });
+
+    setTimeout(() => {
+      setMessage("");
+      setDisableButton(false);
+    }, 30000);
   };
 
   useEffect(() => {

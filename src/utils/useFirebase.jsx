@@ -21,7 +21,26 @@ const useFirebase = () => {
     }
   };
 
-  return { createUser };
+  const googleAttemptLogin = async (email) => {
+    const querySnapshot = await getDocs(
+      query(usersRef, where("email", "==", email))
+    );
+
+    if (!querySnapshot.empty) {
+      const userDoc = querySnapshot.docs[0];
+      const userData = userDoc.data();
+      const username = userData.username;
+      setUser({ loggedIn: true, username: username, email: email });
+      localStorage.setItem("loggedInUser", JSON.stringify({ username, email }));
+    } else {
+      const username = email.split("@")[0];
+      createUser(username, email);
+      setUser({ loggedIn: true, username: username, email: email });
+      localStorage.setItem("loggedInUser", JSON.stringify({ username, email }));
+    }
+  };
+
+  return { createUser, googleAttemptLogin };
 };
 
 export default useFirebase;
