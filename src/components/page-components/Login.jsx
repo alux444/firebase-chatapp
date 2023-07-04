@@ -6,6 +6,8 @@ import { UserContext } from "../../App";
 import { collection, addDoc, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../../server/firebaseConfig";
 import { useNavigate } from "react-router-dom";
+import LoginForm from "../element-components/LoginForm";
+import FormStatus from "../element-components/FormStatus";
 
 const Login = () => {
   const { user, setUser } = useContext(UserContext);
@@ -17,6 +19,7 @@ const Login = () => {
 
   const googleSignIn = () => {
     setDisableButton(true);
+    setMessage("Loading...");
 
     const searchForUser = async (email) => {
       const querySnapshot = await getDocs(
@@ -76,6 +79,7 @@ const Login = () => {
       <Box>
         {!user.loggedIn ? (
           <Box>
+            <FormStatus />
             <p>Sign in with Google</p>
             <button disabled={disableButton} onClick={() => googleSignIn()}>
               Sign In
