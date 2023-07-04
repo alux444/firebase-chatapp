@@ -61,10 +61,6 @@ const Login = () => {
     signInWithPopup(auth, provider).then((result) => {
       searchForUser(result.user.email);
     });
-
-    setDisableButton(false);
-
-    setMessage("");
   };
 
   useEffect(() => {
